@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Magnet, 
@@ -31,12 +30,12 @@ import {
   Link as LinkIcon,
   ShieldCheck
 } from 'lucide-react';
-import { Lead, AppStep, ActiveView, BUSINESS_SECTORS } from './types';
-import { CRM_COLUMNS } from './constants';
-import { cleanLeadsWithAI } from './services/geminiService';
-import { fetchRealLeadsFromAI, MapResult } from './services/mapsService';
-import { LeadTable } from './components/LeadTable';
-import { StatCard } from './components/StatCard';
+import { Lead, AppStep, ActiveView, BUSINESS_SECTORS } from './types.ts';
+import { CRM_COLUMNS } from './constants.ts';
+import { cleanLeadsWithAI } from './services/geminiService.ts';
+import { fetchRealLeadsFromAI, MapResult } from './services/mapsService.ts';
+import { LeadTable } from './components/LeadTable.tsx';
+import { StatCard } from './components/StatCard.tsx';
 import { 
   BarChart, 
   Bar, 
@@ -439,10 +438,7 @@ const App: React.FC = () => {
         </div>
       </div>
 
-      {/* Map Interactive View */}
       <div className="flex-1 relative bg-slate-50 overflow-hidden min-h-[400px] lg:min-h-0">
-        
-        {/* Stylized Grid Background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -453,7 +449,6 @@ const App: React.FC = () => {
             <rect width="100%" height="100%" fill="url(#grid)" />
           </svg>
           
-          {/* Radar Sweep Effect */}
           {isSearching && (
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/10 to-transparent w-full h-full animate-[radar_3s_linear_infinite]" 
                  style={{ transformOrigin: 'center' }}></div>
@@ -474,10 +469,8 @@ const App: React.FC = () => {
            </div>
         </div>
 
-        {/* Display Pins */}
         <div className="absolute inset-0 z-10">
           {showMapResults && mapResults.map((res, idx) => {
-            // Pseudo-deterministic placement based on name/index
             const top = 15 + (idx * 27) % 70;
             const left = 10 + (idx * 31) % 80;
             return (
@@ -488,10 +481,8 @@ const App: React.FC = () => {
               >
                 <div className={`relative ${res.rating >= 4.5 ? 'bg-rose-500' : 'bg-indigo-600'} text-white p-2 rounded-full shadow-[0_0_15px_rgba(79,70,229,0.4)] border-2 border-white cursor-pointer`}>
                   <MapPin size={18} />
-                  {/* Pulse Effect */}
                   <div className={`absolute -inset-1 rounded-full animate-ping opacity-20 ${res.rating >= 4.5 ? 'bg-rose-500' : 'bg-indigo-600'}`}></div>
                 </div>
-                {/* Info Tooltip */}
                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-slate-900 text-white px-3 py-1.5 rounded-xl shadow-2xl text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
                   {res.name}
                   <div className="text-[8px] text-slate-400 font-normal">{res.type}</div>
@@ -501,7 +492,6 @@ const App: React.FC = () => {
           })}
         </div>
 
-        {/* Grounding Sources (Discovery Evidence) */}
         {groundingLinks.length > 0 && (
           <div className="absolute top-16 left-4 right-4 sm:right-auto sm:w-64 max-h-[150px] overflow-y-auto bg-white/80 backdrop-blur-lg rounded-2xl border border-white/40 shadow-xl p-3 z-20 custom-scrollbar animate-in slide-in-from-left-4 duration-500">
             <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center">
@@ -524,7 +514,6 @@ const App: React.FC = () => {
           </div>
         )}
 
-        {/* Bottom Control UI */}
         <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 z-30">
           <div className="bg-white/95 backdrop-blur-xl p-3 sm:p-4 rounded-3xl shadow-2xl border border-white/40 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="flex items-center space-x-3 w-full sm:w-auto">
@@ -572,8 +561,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row overflow-hidden selection:bg-indigo-100 selection:text-indigo-900 relative">
-      
-      {/* Mobile Top Navigation */}
       <div className="lg:hidden flex items-center justify-between p-4 bg-white border-b border-slate-200 sticky top-0 z-50">
         <div className="flex items-center space-x-3">
           <div className="bg-indigo-600 p-2 rounded-lg text-white">
@@ -589,7 +576,6 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      {/* Sidebar Overlay for Mobile */}
       {isMobileMenuOpen && (
         <div 
           className="lg:hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity"
@@ -597,7 +583,6 @@ const App: React.FC = () => {
         />
       )}
 
-      {/* Sidebar Navigation */}
       <aside className={`
         fixed lg:static top-0 bottom-0 left-0 z-50
         bg-white border-r border-slate-200 transition-all duration-500 ease-in-out flex-shrink-0
@@ -610,10 +595,6 @@ const App: React.FC = () => {
               <Magnet size={28} strokeWidth={2.5} />
             </div>
             {isSidebarOpen && <span className="font-black text-2xl tracking-tighter text-slate-800 whitespace-nowrap">LeadMagnet AI</span>}
-          </div>
-
-          <div className="lg:hidden p-8 border-b border-slate-100">
-            <span className="font-black text-xl text-slate-800">Menu</span>
           </div>
 
           <nav className="flex-1 p-5 space-y-2 overflow-y-auto custom-scrollbar">
@@ -637,30 +618,9 @@ const App: React.FC = () => {
               </button>
             ))}
           </nav>
-
-          <div className="p-6">
-             <div className="bg-slate-900 rounded-3xl p-6 text-white overflow-hidden shadow-2xl relative">
-                <div className="absolute -top-4 -right-4 w-16 h-16 bg-indigo-600 rounded-full blur-2xl opacity-50"></div>
-                {(isSidebarOpen || isMobileMenuOpen) ? (
-                  <div className="space-y-4">
-                    <p className="text-[10px] font-black text-slate-500 tracking-[0.2em] uppercase">Engine Status</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center text-xs font-bold">
-                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 mr-3 animate-pulse"></div>
-                        Live Web Fetcher
-                      </div>
-                      <Info size={16} className="text-slate-600" />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 mx-auto animate-pulse"></div>
-                )}
-             </div>
-          </div>
         </div>
       </aside>
 
-      {/* Primary Content Area */}
       <main className="flex-1 flex flex-col h-[calc(100vh-64px)] lg:h-screen overflow-hidden relative">
         <header className="hidden lg:flex h-20 bg-white/90 backdrop-blur-xl border-b border-slate-200 items-center justify-between px-10 sticky top-0 z-10">
           <div className="flex items-center space-x-6">
@@ -715,19 +675,6 @@ const App: React.FC = () => {
              )}
           </div>
         </header>
-
-        {/* Mobile Sub-Header (Controls) */}
-        <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-slate-200 gap-2">
-           <span className="text-sm font-bold text-slate-800 truncate">{getHeaderTitle()}</span>
-           <div className="flex items-center space-x-2">
-              {leads.length > 0 && (
-                <button onClick={exportToCSV} className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-                  <Download size={18} />
-                </button>
-              )}
-              {status !== AppStep.IDLE && <Loader2 className="animate-spin text-indigo-600" size={18} />}
-           </div>
-        </div>
 
         <div className="flex-1 overflow-y-auto p-4 md:p-10 bg-slate-50/30 custom-scrollbar">
           {activeView === ActiveView.DASHBOARD && renderDashboard()}

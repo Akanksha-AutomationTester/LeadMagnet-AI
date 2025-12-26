@@ -1,10 +1,8 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
-import { Lead } from "../types";
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+import { Lead } from "../types.ts";
 
 export const cleanLeadsWithAI = async (rawStrings: string[]): Promise<Lead[]> => {
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -53,7 +51,7 @@ export const cleanLeadsWithAI = async (rawStrings: string[]): Promise<Lead[]> =>
       id: `lead-${Date.now()}-${index}`,
       email: item.email || "n/a",
       website: item.website || "n/a",
-      address: item.street || item.name, // Fallback for raw address display
+      address: item.street || item.name,
       state: item.state || "",
       country: item.country || "",
       zipCode: item.zipCode || "",
